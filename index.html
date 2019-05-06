@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
+  <script src="animals.js"></script>
   <title>Google</title>
 </head>
 
@@ -37,10 +37,13 @@
         <image class="google-logo" src="img/google.png" alt="Google logo" />
       </div>
       <div class="search-input-wrapper">
+
         <div class="search-icon">
           <i class="fas fa-search"></i>
         </div>
+
         <input v-model="inputContent" class="search-input" type="text" title="Szukaj" />
+
         <div class="search-input-icons-wrapper">
           <div class="search-input-icon">
             <i class="fas fa-keyboard"></i>
@@ -52,6 +55,12 @@
           </div>
         </div>
       </div>
+      <div class="input-autocomplete-wrapper">
+        <v-autocompleter v-on:update-input="changeInputContent($event)" count="6" v-bind:input-content="inputContent"
+          class="input-autocomplete">
+        </v-autocompleter>
+      </div>
+
       <div class="search-buttons-wrapper">
         <button class="search-button">Szukaj w Google</button>
         <button class="search-button">Szczęśliwy traf</button>
