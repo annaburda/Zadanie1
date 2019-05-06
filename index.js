@@ -1,15 +1,20 @@
 Vue.component("v-autocompleter", {
-  props: ['inputContent', 'count'],
+  props: ['inputContent', 'isActive', 'count', 'changeActiveState'],
   data: function () {
     return {
       animals: animals,
-      isActive: false,
+      hints: []
     }
   },
   template:
-    `<ul v-bind:class="getClass">
-      <li class="input-autocomplete-item" v-for="n in displayHints" v-on:click="updateInput">{{ n }}</li>
-    </ul>`,
+    `
+      <div class="input-autocomplete-wrapper" v-bind:class="getClass">
+        <hr class="input-autocomplete-separator" />
+        <ul  class="input-autocomplete" v-bind:class="getClass">
+          <li class="input-autocomplete-item" v-for="n in displayHints" v-on:click="selectHint">{{ n }}</li>
+        </ul>
+      </div>
+    `,
   computed: {
     displayHints: function () {
       let filtered = [];
@@ -20,24 +25,30 @@ Vue.component("v-autocompleter", {
               .toLowerCase()
               .startsWith(this.inputContent.toLowerCase()));
       }
-      if (filtered.length === 1 && filtered[0] === this.inputContent) {
-        this.isActive = false;
-      } else if (filtered.length > 0) {
-        this.isActive = true;
-      } else {
-        this.isActive = false;
-      }
-      return filtered.slice(0, this.count);
+
+      this.hints = filtered.slice(0, this.count);
+      this.isSomeHints();
+      return this.hints;
     },
     getClass: function () {
       return this.isActive ? 'active' : '';
     }
   },
   methods: {
-    updateInput: function (event) {
-      console.log(event.target.innerHTML);
-      this.$emit('update-input', event.target.innerHTML);
-      this.isActive = false;
+    selectHint: function (event) {
+      const hintValue = event.target.innerHTML
+      this.$emit('select-hint', { 'value': hintValue });
+    },
+    isSomeHints: function () {
+      let isActive;
+
+      if (this.hints[0] === this.inputContent || this.inputContent === '' || this.hints.length === 0)
+        isActive = false;
+      else {
+        isActive = true;
+      }
+
+      this.changeActiveState(isActive);
     }
   }
 })
@@ -47,13 +58,24 @@ new Vue({
   data() {
     return {
       inputContent: "",
-
+      isInputActive: false,
+    }
+  },
+  computed: {
+    activeClass() {
+      return this.isInputActive ? 'active' : '';
     }
   },
   methods: {
-    changeInputContent: function (value) {
-      this.inputContent = value;
-    }
+    changeInputContent: function (params) {
+      this.inputContent = params.value;
+      this.isInputActive = false;
+      this.isSelected = true;
+    },
+    changeActiveState: function (isActive) {
+      this.isInputActive = isActive;
+    },
+
   }
 })
 

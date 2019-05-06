@@ -36,13 +36,13 @@
       <div class="google-logo-wrapper">
         <image class="google-logo" src="img/google.png" alt="Google logo" />
       </div>
-      <div class="search-input-wrapper">
+      <div class="search-input-wrapper" v-bind:class="activeClass">
 
         <div class="search-icon">
           <i class="fas fa-search"></i>
         </div>
 
-        <input v-model="inputContent" class="search-input" type="text" title="Szukaj" />
+        <input v-model="inputContent" v-bind:class="activeClass" class="search-input" type="text" title="Szukaj" />
 
         <div class="search-input-icons-wrapper">
           <div class="search-input-icon">
@@ -55,11 +55,10 @@
           </div>
         </div>
       </div>
-      <div class="input-autocomplete-wrapper">
-        <v-autocompleter v-on:update-input="changeInputContent($event)" count="6" v-bind:input-content="inputContent"
-          class="input-autocomplete">
-        </v-autocompleter>
-      </div>
+
+      <v-autocompleter v-on:select-hint="changeInputContent($event)" v-bind:change-active-state="changeActiveState"
+        count="6" v-bind:input-content="inputContent" v-bind:is-active="isInputActive">
+      </v-autocompleter>
 
       <div class="search-buttons-wrapper">
         <button class="search-button">Szukaj w Google</button>
