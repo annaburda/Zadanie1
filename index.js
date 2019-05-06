@@ -10,9 +10,17 @@ Vue.component("v-autocompleter", {
     `
       <div class="input-autocomplete-wrapper" v-bind:class="getClass">
         <hr class="input-autocomplete-separator" />
-        <ul  class="input-autocomplete" v-bind:class="getClass">
-          <li class="input-autocomplete-item" v-for="n in displayHints" v-on:click="selectHint">{{ n }}</li>
-        </ul>
+        <div class="input-autocomplete" v-bind:class="getClass">
+          <ul class="input-autocomplete-list">
+            <li class="input-autocomplete-item" v-for="n in displayHints" v-on:click="selectHint">{{ n }}</li>
+          </ul>
+          <div class="search-buttons-wrapper inside">
+          <button class="search-button">Szukaj w Google</button>
+          <button class="search-button">Szczęśliwy traf</button>
+        </div>
+        </div>
+        
+       
       </div>
     `,
   computed: {
